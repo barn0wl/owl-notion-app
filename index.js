@@ -143,33 +143,6 @@ async function updatingTasks() {
     await createNextRecurr();
 }
 
-
-function executeFunctionAtSpecificTime(hour, minute, second, func) {
-    const now = new Date();
-    let millisUntilSpecifiedTime = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      hour,
-      minute,
-      second,
-      0
-    ) - now;
-  
-    // Ensure the specified time is in the future
-    if (millisUntilSpecifiedTime < 0) {
-      // If the specified time has already passed today,
-      // schedule it for the same time tomorrow
-      millisUntilSpecifiedTime += 24 * 60 * 60 * 1000;
-    }
-  
-    setTimeout(function () {
-      func();
-      // Schedule the function to run again at the same time tomorrow
-      executeFunctionAtSpecificTime(hour, minute, second, func);
-    }, millisUntilSpecifiedTime);
-  }
-  
-executeFunctionAtSpecificTime(0, 0, 0, updatingTasks);
+updatingTasks();
   
 
