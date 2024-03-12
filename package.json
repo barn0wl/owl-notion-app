@@ -13,7 +13,6 @@
     "@breejs/later": "^4.2.0",
     "@notionhq/client": "^2.2.14",
     "cronstrue": "^2.48.0",
-    "dotenv": "^16.4.5",
     "fastify": "^4.26.2"
   }
 }

@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const { Client } = require('@notionhq/client')
 const later = require('@breejs/later');
 const cronstrue = require('cronstrue');
@@ -66,6 +64,7 @@ async function createNextRecurr() {
                     "equals": false
                 }
                 },
+                //add checkbox must not be checked
                 {
                     "property": "Cron",
                     "rich_text": {
