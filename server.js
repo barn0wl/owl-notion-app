@@ -17,7 +17,6 @@ const index = require('./index.js')
     console.log(`Server is now listening on ${address}`)
   })
 
-  //start updating tasks
-  console.log('time to update tasks!')
-  index.updatingTasks();
+  //start countdown for updating tasks
+  index.executeFunctionAtSpecificTime(0, 0, 0, index.updatingTasks);
   
