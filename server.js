@@ -1,7 +1,8 @@
 const fastify = require('fastify')({
     logger: true
   })
-  
+const index = require('./index.js')
+
   // Declare a route
   fastify.get('/', function (request, reply) {
     reply.send({ hello: 'world' })
@@ -15,3 +16,8 @@ const fastify = require('fastify')({
     }
     console.log(`Server is now listening on ${address}`)
   })
+
+  //start updating tasks
+  console.log('time to update tasks!')
+  index.updatingTasks();
+  

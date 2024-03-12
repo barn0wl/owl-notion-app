@@ -141,7 +141,7 @@ async function updatingTasks() {
     await getUniqueRecurr();
     await createNextRecurr();
 }
-
-updatingTasks();
   
-
+module.exports = {
+    updatingTasks
+};
