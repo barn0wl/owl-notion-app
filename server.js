@@ -4,7 +4,6 @@ const fastify = require('fastify')({
 const index = require('./index.js');
 var cron = require('node-cron');
 
-
   // Declare a route
   fastify.get('/', function (request, reply) {
     reply.send({ hello: 'world' })
@@ -19,8 +18,14 @@ var cron = require('node-cron');
     console.log(`Server is now listening on ${address}`)
   })
 
-  //keep updating every 14 min to prevent app from going to sleep
-  cron.schedule('*/14 * * * *', () => {
-    index.updatingTasks();
+  //here, we ping the server every 14 min to keep it
+  //awake, since we use Render free tier to host app
+  cron.schedule('*/10 * * * *', () => {
+    index.pingServer();
+  });
+
+  //here, we update tasks 
+  cron.schedule('*/20 * * * *', async () => {
+    await index.updatingTasks();
   });
   
