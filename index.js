@@ -1,8 +1,11 @@
 const { Client } = require('@notionhq/client')
 const later = require('@breejs/later');
 const cronstrue = require('cronstrue');
+const https = require('node:https');
+
 later.date.localTime();
 
+const backendUrl = 'https://owl-notion-app.onrender.com';
 const notion = new Client ({auth: process.env.NOTION_KEY})
 const databaseId = process.env.NOTION_DATABASE_ID;
 
@@ -148,7 +151,21 @@ async function updatingTasks() {
     await createNextRecurr();
 }
 
+function pingServer() {
+    console.log('pinging server');
+    https.get(backendUrl, (res) => {
+        if (res.statusCode === 200) {
+            console.log('server pinged successfully');
+        } else {
+            console.error(`failed to ping server with status code ${res.statusCode}`)
+        }
+        res.on('error', (e) => {
+            console.error(e);
+        })
+    });
+}
 
 module.exports = {
-    updatingTasks
+    updatingTasks,
+    pingServer
 };
