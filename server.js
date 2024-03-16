@@ -20,12 +20,12 @@ var cron = require('node-cron');
 
   //here, we ping the server every 14 min to keep it
   //awake, since we use Render free tier to host app
-  cron.schedule('*/10 * * * *', () => {
+  cron.schedule('*/14 * * * *', () => {
     index.pingServer();
   });
 
-  //here, we update tasks 
-  cron.schedule('*/20 * * * *', async () => {
+  //here, we update tasks every day at midnight
+  cron.schedule('0 0 * * *', async () => {
     await index.updatingTasks();
   });
   
