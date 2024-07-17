@@ -1,19 +1,20 @@
 {
-  "name": "owl_os_app",
+  "name": "v2",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
     "@breejs/later": "^4.2.0",
-    "@notionhq/client": "^2.2.14",
-    "cronstrue": "^2.48.0",
-    "fastify": "^4.26.2",
-    "node-cron": "^3.0.3"
+    "@notionhq/client": "^2.2.15",
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1",
+    "pug": "^3.0.3"
   }
 }
