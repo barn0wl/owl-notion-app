@@ -1,10 +1,8 @@
-const { Client } = require('@notionhq/client')
-const later = require('@breejs/later');
-const cronstrue = require('cronstrue');
-const https = require('node:https');
+import { Client } from '@notionhq/client';
+import later from '@breejs/later';
+import env from 'dotenv';
 later.date.localTime();
 
-const backendUrl = 'https://owl-notion-app.onrender.com';
 const notion = new Client ({auth: process.env.NOTION_KEY})
 const databaseId = process.env.NOTION_DATABASE_ID;
 
@@ -165,15 +163,6 @@ async function createNewRecurr() {
                                 }
                             }
                         ]
-                    },
-                    "Interval": {
-                        "rich_text": [
-                            {
-                                "text":  {
-                                    "content": cronstrue.toString(rtask.properties.Cron.rich_text[0].text.content)
-                                }
-                            }
-                        ]
                     }
                 }
             })
@@ -188,22 +177,4 @@ async function updatingTasks() {
     await createNewRecurr();
 }
 
-function pingServer() {
-    console.log('Pinging server');
-    https.get(backendUrl, (res) => {
-        if (res.statusCode === 200) {
-            console.log('Server pinged successfully');
-        } else {
-            console.error(`Failed to ping server with status code ${res.statusCode}`)
-        }
-        res.on('error', (e) => {
-            console.error(e);
-        })
-    });
-}
-
-
-module.exports = {
-    updatingTasks,
-    pingServer
-};
+export {getTempRecurr, createNewRecurr, updatingTasks};

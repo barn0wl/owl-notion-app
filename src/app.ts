@@ -1,6 +1,6 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+import express from 'express';
+import bodyParser from 'body-parser';
+import {getTempRecurr} from './index';
 
 const app = express();
 
@@ -26,3 +26,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+getTempRecurr();
