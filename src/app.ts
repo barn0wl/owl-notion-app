@@ -1,8 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {getTempRecurr} from './index';
+import { Client } from '@notionhq/client';
+import dotenv from 'dotenv';
+import { getTempRecurr } from './index.js';
 
+dotenv.config();
 const app = express();
+export const notion = new Client ({auth: process.env.NOTION_KEY});
+export const databaseId = process.env.NOTION_DATABASE_ID?? "";
 
 //middleware
 

@@ -1,14 +1,10 @@
-import { Client } from '@notionhq/client';
 import later from '@breejs/later';
-import env from 'dotenv';
 later.date.localTime();
-
-const notion = new Client ({auth: process.env.NOTION_KEY})
-const databaseId = process.env.NOTION_DATABASE_ID;
+import { notion, databaseId } from './app.js';
 
 const tempRecurrTasks = []
 
-async function getTempRecurr() {
+export async function getTempRecurr() {
     const response = await notion.databases.query({
         database_id: databaseId,
         filter: {
@@ -176,5 +172,3 @@ async function updatingTasks() {
     await getTempRecurr();
     await createNewRecurr();
 }
-
-export {getTempRecurr, createNewRecurr, updatingTasks};
