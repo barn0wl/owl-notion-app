@@ -10,3 +10,5 @@ export enum Status {
     'In progress',
     'Complete'
 }
+
+export type Weekday = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat'

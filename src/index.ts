@@ -5,33 +5,7 @@ import { notion, databaseId } from './app.js';
 const tempRecurrTasks = []
 
 export async function getTempRecurr() {
-    const response = await notion.databases.query({
-        database_id: databaseId,
-        filter: {
-
-            //make sure that the task is recurring, not archived, and has no planned date
-            //all of this indicates that the task is a template for future recurring tasks
-            "and": [ {
-                "property": "Recurring",
-                "checkbox": {
-                "equals": true
-            }
-            },
-            {
-                "property": "Archive",
-                "checkbox": {
-                "equals": false
-            }
-            },
-            {
-                "property": "Planned",
-                "date": {
-                    "is_empty": true
-                }
-            }
-            ]
-        }
-    })
+    
     
     //this checks if any of the returned temp tasks isnt found in our 
     //list of temp tasks and adds it 

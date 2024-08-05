@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { Client } from '@notionhq/client';
 import dotenv from 'dotenv';
-import { getTempRecurr } from './index.js';
+import { getAllTasks } from './services/notionService.js';
 
 dotenv.config();
 const app = express();
@@ -32,4 +32,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-getTempRecurr();
+getAllTasks()
+.then(res => console.log("Query results:", res))
+.catch(err => console.log("Error:", err))

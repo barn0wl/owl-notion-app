@@ -1,6 +1,4 @@
-import { Priority } from "./enums";
-
-type Weekday = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat'
+import { Priority, Weekday } from "./types.js";
 
 export class Task {
 

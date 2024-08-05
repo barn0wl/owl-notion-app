@@ -1,4 +1,4 @@
-import { Status, Priority } from "./enums.js";
+import { Status, Priority } from "./types.js";
 import { Task } from "./task.js";
 
 export class Project {
