@@ -14,7 +14,7 @@ export class Task {
         isChecked?: boolean,
         priority?: Priority,
         schedule?: Schedule,
-        nextDue?: Date
+        nextDue?: Date | null
     ) {
         this.name = name
         this.recurring = recurring?? false

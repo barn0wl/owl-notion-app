@@ -4,6 +4,9 @@ import { Client } from '@notionhq/client';
 import dotenv from 'dotenv';
 import { getAllTasks } from './services/notionService.js';
 import { parseNotionPageToTask } from './services/taskService.js';
+import { connectToMongo } from './mongoConnection.js';
+import { Task } from './models/task.js';
+import { addTaskToMongo } from './services/mongoService.js';
 
 dotenv.config();
 const app = express();
@@ -33,10 +36,27 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-const allNotionTasks = getAllTasks()
+var allTasks : Task[] = []
+
+const addSomeTasksToMongo = async () => {
+  for (let i = 0; i < 3; i++) {
+    const task = allTasks[i];
+    await addTaskToMongo(task)
+  }
+}
+
+//mongo connection
+await connectToMongo()
+.then(
+  () => {return getAllTasks()}
+)
 .then(res => {
-  res.forEach(task => {console.log("New task object:", parseNotionPageToTask(task))})
+  res.forEach(task => {
+    allTasks.push(parseNotionPageToTask(task))
+    console.log("New task object:", parseNotionPageToTask(task))
+  })
+  addSomeTasksToMongo()
 })
-.catch(err => console.log("Error:", err))
+.catch(console.dir)
 
 // console.log(allNotionTasks)

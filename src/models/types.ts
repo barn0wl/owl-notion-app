@@ -1,8 +1,8 @@
 export enum Priority {
-    'None',
-    'Low',
-    'Mid',
-    'High'
+    None,
+    Low,
+    Mid,
+    High
 }
 
 export enum Status {
