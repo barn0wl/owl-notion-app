@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import { Client } from '@notionhq/client';
 import dotenv from 'dotenv';
 import { getAllTasks } from './services/notionService.js';
+import { parseNotionPageToTask } from './services/taskService.js';
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,10 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-getAllTasks()
-.then(res => console.log("Query results:", res))
+const allNotionTasks = getAllTasks()
+.then(res => {
+  res.forEach(task => {console.log("New task object:", parseNotionPageToTask(task))})
+})
 .catch(err => console.log("Error:", err))
+
+// console.log(allNotionTasks)

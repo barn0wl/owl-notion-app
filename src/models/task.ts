@@ -1,4 +1,4 @@
-import { Priority, Weekday } from "./types.js";
+import { Priority, Schedule } from "./types.js";
 
 export class Task {
 
@@ -6,14 +6,14 @@ export class Task {
     public priority: Priority
     public isChecked: boolean
     public recurring: boolean
-    public schedule: { [ key in Weekday] : boolean }
+    public schedule: Schedule
 
     constructor(
         public name: string,
         recurring?: boolean,
         isChecked?: boolean,
         priority?: Priority,
-        schedule?: { [ key in Weekday] : boolean },
+        schedule?: Schedule,
         nextDue?: Date
     ) {
         this.name = name
@@ -24,7 +24,7 @@ export class Task {
         this.schedule = schedule ?? this.getDefaultSchedule()
     }
 
-    private getDefaultSchedule = () : { [ key in Weekday] : boolean } => {
+    private getDefaultSchedule = () : Schedule => {
         return {
             Sun: false,
             Mon: false,
