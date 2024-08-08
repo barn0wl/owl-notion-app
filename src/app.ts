@@ -2,11 +2,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { Client } from '@notionhq/client';
 import dotenv from 'dotenv';
-import { getAllTasks } from './services/notionService.js';
+import { getAllNotionTasks } from './services/notionService.js';
 import { parseNotionPageToTask } from './services/taskService.js';
 import { connectToMongo } from './mongoConnection.js';
 import { Task } from './models/task.js';
-import { addTaskToMongo } from './services/mongoService.js';
+import { addTaskToMongo, convertTaskToMongo } from './services/mongoService.js';
 
 dotenv.config();
 const app = express();
@@ -41,14 +41,14 @@ var allTasks : Task[] = []
 const addSomeTasksToMongo = async () => {
   for (let i = 0; i < 3; i++) {
     const task = allTasks[i];
-    await addTaskToMongo(task)
+    await addTaskToMongo(convertTaskToMongo(task))
   }
 }
 
 //mongo connection
 await connectToMongo()
 .then(
-  () => {return getAllTasks()}
+  () => {return getAllNotionTasks()}
 )
 .then(res => {
   res.forEach(task => {
@@ -58,5 +58,3 @@ await connectToMongo()
   addSomeTasksToMongo()
 })
 .catch(console.dir)
-
-// console.log(allNotionTasks)

@@ -14,7 +14,7 @@ export class Project {
         priority?: Priority,
     ) {
         this.name = name,
-        this.status = status?? Status["Not started"],
+        this.status = status?? Status.NotStarted,
         this.tasks = tasks ?? [],
         this.priority = priority?? Priority.None
     }

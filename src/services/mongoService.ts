@@ -1,21 +1,24 @@
 import { TaskDocument, Task as taskSchema} from "../models/mongo/taskSchema.js";
 import { Task } from "../models/task.js";
 
-export const addTaskToMongo = async (task: Task) => {
+export const addTaskToMongo = async (task: TaskDocument) => {
     //add task to mongo
     try {
-        const taskData: Partial<TaskDocument> = {
-            name: task.name,
-            recurring: task.recurring,
-            done: task.isChecked,
-            priority: task.priority,
-            due: task.nextDue?? null,
-            schedule: task.schedule
-        }
-        const newTask = new taskSchema(taskData)
+        const newTask = new taskSchema(task)
         await newTask.save();
-        console.log("Task added to mongo!", newTask)
+        console.log("New task added to mongo!", newTask)
     } catch (error) {
         console.error(error)
     }
+  }
+
+export const convertTaskToMongo = (task: Task): TaskDocument => {
+    return {
+        name: task.name,
+        recurrenceInterval: task.recurrenceInterval,
+        done: task.isChecked,
+        priority: task.priority,
+        due: task.nextDue?? null,
+        recurrenceDays: task.recurrenceDays
+    } as TaskDocument
   }

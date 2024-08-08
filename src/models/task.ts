@@ -1,38 +1,26 @@
-import { Priority, Schedule } from "./types.js";
+import { Priority, RecurrenceInterval, Weekday } from "./types.js";
 
 export class Task {
-
+    public name: string
     public nextDue: Date | null
     public priority: Priority
     public isChecked: boolean
-    public recurring: boolean
-    public schedule: Schedule
+    public recurrenceInterval: RecurrenceInterval
+    public recurrenceDays?: Weekday[]
 
     constructor(
-        public name: string,
-        recurring?: boolean,
+        name: string,
+        recurrenceInterval?: RecurrenceInterval,
         isChecked?: boolean,
         priority?: Priority,
-        schedule?: Schedule,
-        nextDue?: Date | null
+        nextDue?: Date | null,
+        recurrenceDays?: Weekday[]
     ) {
         this.name = name
-        this.recurring = recurring?? false
+        this.recurrenceInterval = recurrenceInterval?? RecurrenceInterval.None
         this.isChecked = isChecked?? false
         this.nextDue = nextDue?? null
         this.priority = priority?? Priority.None
-        this.schedule = schedule ?? this.getDefaultSchedule()
-    }
-
-    private getDefaultSchedule = () : Schedule => {
-        return {
-            Sun: false,
-            Mon: false,
-            Tue: false,
-            Wed: false,
-            Thu: false,
-            Fri: false,
-            Sat: false
-        }
+        this.recurrenceDays = recurrenceDays
     }
 }

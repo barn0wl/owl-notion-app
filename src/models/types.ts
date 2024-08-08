@@ -1,16 +1,29 @@
 export enum Priority {
-    None,
+    None = 0,
     Low,
     Mid,
     High
 }
 
 export enum Status {
-    'Not started',
-    'In progress',
-    'Complete'
+    NotStarted = 'Not started',
+    InProgress = 'In progress',
+    Complete = 'Complete'
 }
 
-export type Weekday = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat'
+export enum Weekday {
+    Sunday = 0,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
+}
 
-export type Schedule = { [ key in Weekday] : boolean }
+export enum RecurrenceInterval {
+    None = 'N/A',
+    Daily = 'Daily',
+    Weekly = 'Weekly',
+    Monthly = 'Monthly'
+}

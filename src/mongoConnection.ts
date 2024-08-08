@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 
 
 dotenv.config()
-const uri = `mongodb+srv://yohannzoh:${process.env.MONGO_USER_PASSW}@cluster0.znrk3dv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const dbName = 'owl-tasks-app'
+const uri = `mongodb+srv://yohannzoh:${process.env.MONGO_USER_PASSW}@cluster0.znrk3dv.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=Cluster0`
 
 const clientOptions: ConnectOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } }
 
@@ -15,8 +16,5 @@ export const connectToMongo = async () => {
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
       } catch(error) {
         console.log(error)
-      } finally {
-        // Ensures that the client will close when you finish/error
-        await mongoose.disconnect();
       }
     }

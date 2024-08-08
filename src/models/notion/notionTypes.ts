@@ -1,5 +1,4 @@
-export interface IPageObjectResponse {
-    id: string,
+export interface IPageObject {
     properties: PageObjectProperties
 }
 
@@ -9,8 +8,8 @@ interface PageObjectProperties {
     Done?: CheckboxProperty,
     Priority?: SelectProperty,
     Project?: RelationProperty,
-    Schedule?: MultiSelectProperty,
-    Recurring?: CheckboxProperty
+    'Recurrence Days'?: MultiSelectProperty,
+    'Recurrence Interval'?: SelectProperty
 }
 
 interface TitleProperty {

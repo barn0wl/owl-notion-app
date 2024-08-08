@@ -2,31 +2,6 @@ import later from '@breejs/later';
 later.date.localTime();
 import { notion, databaseId } from './app.js';
 
-const tempRecurrTasks = []
-
-export async function getTempRecurr() {
-    
-    
-    //this checks if any of the returned temp tasks isnt found in our 
-    //list of temp tasks and adds it 
-    const newTempList = response.results;
-    for(let nt of newTempList){
-        if (!tempRecurrTasks.includes(nt)){
-            tempRecurrTasks.push(nt);
-        }
-    }
-    console.log('New tasks have been added to the template list!')
-
-    //this checks if a temp task that was previously in our temp task list isnt found
-    //in the database anymore (it has been deleted or archived)
-    for(let tempTask of tempRecurrTasks){
-        if (!newTempList.includes(tempTask)){
-            const index = tempRecurrTasks.indexOf(tempTask);
-            tempRecurrTasks.splice(index, 1)
-        }
-    }
-    console.log('Some tasks have been removed from the template list!')
-}
 
 
 async function createNewRecurr() {
