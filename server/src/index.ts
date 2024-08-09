@@ -7,6 +7,7 @@ import { parseNotionPageToTask } from './services/taskService.js';
 import { connectToMongo } from './mongoConnection.js';
 import { Task } from './models/task.js';
 import { addTaskToMongo, convertTaskToMongo } from './services/mongoService.js';
+import { IPageObject } from './models/notion/notionTypes.js';
 
 dotenv.config();
 const app = express();
@@ -52,8 +53,8 @@ await connectToMongo()
 )
 .then(res => {
   res.forEach(task => {
-    allTasks.push(parseNotionPageToTask(task))
-    console.log("New task object:", parseNotionPageToTask(task))
+    allTasks.push(parseNotionPageToTask(task as IPageObject))
+    console.log("New task object:", parseNotionPageToTask(task as IPageObject))
   })
   addSomeTasksToMongo()
 })

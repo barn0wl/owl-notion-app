@@ -13,7 +13,7 @@ export class Task {
         recurrenceInterval?: RecurrenceInterval,
         isChecked?: boolean,
         priority?: Priority,
-        nextDue?: Date | null,
+        nextDue?: Date,
         recurrenceDays?: Weekday[]
     ) {
         this.name = name

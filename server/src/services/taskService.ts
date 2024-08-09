@@ -1,18 +1,26 @@
-
+import { DateTime } from "luxon";
 import { Task } from "../models/task.js";
-import { IPageObject } from "../models/notion/notionTypes.js";
+import { CheckboxProperty, DateProperty, IPageObject, MultiSelectProperty, SelectProperty, TitleProperty } from "../models/notion/notionTypes.js";
 import { Priority, RecurrenceInterval, Weekday } from "../models/types.js";
 import { TaskDocument } from "../models/mongo/taskSchema.js";
 
 export const parseNotionPageToTask = (notionPage: IPageObject): Task => {
+
     //this function takes a task PageObject and transforms it into a business Task object
-    const name = notionPage.properties.Name?.title[0].text.content || ""
-    const due = notionPage.properties.Due?.date?.start || null
-    const done = notionPage.properties.Done?.checkbox
-    const recurrenceInterval = notionPage.properties["Recurrence Interval"]?.select?.name as RecurrenceInterval || RecurrenceInterval.None
-    const priority = parsePriorityProperty(notionPage.properties.Priority?.select?.name)
+    const nameProp = notionPage.properties.Name as TitleProperty
+    const name = nameProp? nameProp.title[0].text.content : ""
+    const dueProp = notionPage.properties.Due as DateProperty
+
+    const due = dueProp && dueProp.date? parseStringToDate(dueProp.date.start) : undefined
+    const doneProp = notionPage.properties.Done as CheckboxProperty
+    const done = doneProp?.checkbox
+    const recurrenceProp = notionPage.properties["Recurrence Interval"] as SelectProperty
+    const recurrenceInterval = recurrenceProp? recurrenceProp.select?.name as RecurrenceInterval : RecurrenceInterval.None
+    const priorityProp = notionPage.properties.Priority as SelectProperty
+    const priority = parsePriorityProperty(priorityProp?.select?.name)
     const scheduledDays : Weekday[] = []
-    notionPage.properties["Recurrence Days"]?.multi_select.forEach(dayProp => {
+    const recurrenceDaysProp = notionPage.properties["Recurrence Days"] as MultiSelectProperty
+    recurrenceDaysProp?.multi_select.forEach(dayProp => {
         const day = parseWeekdayProperty(dayProp.name)
         if (day) {
             scheduledDays.push(day)
@@ -92,4 +100,15 @@ export const calculateNextDue = (task: Task) : Date | null  => {
             break;
     }
     return nextDue
+}
+
+export const parseStringToDate = (dateString: string): Date | undefined => {
+    try {
+        const FORMAT = 'yyyy-MM-dd'
+        const dateTime = DateTime.fromFormat(dateString, FORMAT)
+        return dateTime.toJSDate()
+    } catch (error) {
+        console.log("Error parsing date:", error)
+        return undefined
+    }
 }

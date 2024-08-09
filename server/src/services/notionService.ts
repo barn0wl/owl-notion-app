@@ -1,21 +1,20 @@
-import { PageObject } from "@notionhq/client/build/src/api-endpoints.js"
-import { notion, databaseId } from "../app.js"
+import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints.js"
+import { notion, databaseId } from "../index.js"
 import { isFullPage } from "@notionhq/client"
 import { Task } from "../models/task.js"
 import { IPageObject } from "../models/notion/notionTypes.js"
+import { Priority, Weekday } from "../models/types.js"
 
-export const getAllNotionTasks = async () : Promise<PageObject[]> => {
+export const getAllNotionTasks = async () : Promise<PageObjectResponse[]> => {
     try {
         const response = await notion.databases.query({
             database_id: databaseId,
             filter:
-                //make sure that the task is recurring, not archived, and has no planned date
-                //all of this indicates that the task is a template for future recurring tasks
                 {
                     property: "Archive",
                     checkbox: {
                     equals: false
-                }
+                    }
                 },
             filter_properties: ["title", "%3EU%3D%3F", "%3FrqN", "ExKE", "Zm%3AU", "nThT", "%7CcWV"]
         })
@@ -30,6 +29,12 @@ export const getAllNotionTasks = async () : Promise<PageObject[]> => {
 }
 
 export const convertTaskToNotion = (task: Task) : IPageObject => {
+    const dayProp : {name: string}[] = []
+    if (task.recurrenceDays) {
+        task.recurrenceDays.forEach(day => 
+            dayProp.push(convertToDayProp(parseWeekdayAsString(day)))
+        )
+    }
     return {
         properties: {
             Name: {
@@ -45,54 +50,76 @@ export const convertTaskToNotion = (task: Task) : IPageObject => {
             },
             Due: {
                 type: "date",
-                date: {
-                    start: task.nextDue,
-                    }
+                date: task.nextDue? {
+                    start: task.nextDue.toDateString(),
+                    } : null
             },
             Done: {
-                type: 'checkbox',
+                type: "checkbox",
                 checkbox: task.isChecked,
               },
             Priority: {
                 type: "select",
                 select : {
-                  name: ,
+                  name: parsePriorityAsString(task.priority),
                 }
             },
             'Recurrence Days': {
-                type: "multi-select",
-                multi_select : {
-                  name: string,
-                } []
+                type: "multi_select",
+                multi_select : dayProp
             },
             'Recurrence Interval': {
                 type: "select",
                 select : {
-                  name: task.recurrenceInterval,
+                  name: task.recurrenceInterval as string,
                 }
             }
         }
-    } as IPageObject
+    }
 }
 
 export const postTaskToNotion = async (task: Task) => {
+    const page = convertTaskToNotion(task)
     try {
         const response = await notion.pages.create({
             parent: {
                 type: 'database_id',
                 database_id: databaseId,
             },
-            properties: {
-                Name: {
-                    title: [
-                        {
-                            text: {
-                                content: task.name
-                            }
-                        }
-                    ]
-                }
-            }
-        }).then()
+            properties: page.properties
+        })
+    }catch(error) {
+        console.log("Error adding task to Notion:", error)
     }
 }
+
+
+//helper functions that helps convert numbers in the recurrenceDays 1 priority props to actual day & priority strings
+const priorityValueMap : Record<Priority, string> = {
+    0 : 'None',
+    1 : 'Low',
+    2 : 'Mid',
+    3 : 'High'
+}
+
+const weekdayValueMap : Record<Weekday, string> = {
+    0 : 'Sunday',
+    1 : 'Monday',
+    2 : 'Tuesday',
+    3 : 'Wednesday',
+    4 : 'Thursday',
+    5 : 'Friday',
+    6 : 'Saturday',
+}
+
+const parsePriorityAsString = (priority: Priority) : string => {
+    return priorityValueMap[priority]
+}
+
+const parseWeekdayAsString = (weekday: Weekday): string => {
+    return weekdayValueMap[weekday]
+  }
+
+const convertToDayProp = (day: string) : {name: string} => {
+    return {name: day}
+  }

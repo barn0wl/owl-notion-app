@@ -6,7 +6,7 @@ export interface TaskDocument extends Document {
     recurrenceInterval: RecurrenceInterval,
     done: boolean,
     priority: Priority,
-    due: Date | null,
+    due?: Date,
     recurrenceDays?: Weekday[]
 }
 
@@ -15,7 +15,7 @@ const taskSchema = new Schema<TaskDocument>({
     done: {type: Boolean, required: true},
     recurrenceInterval: {type: String, required: true, enum: Object.values(RecurrenceInterval)},
     priority: {type: Number, required: true, enum: [Priority.None, Priority.Low, Priority.Mid, Priority.High]},
-    due: {type: Date, required: false},
+    due: {type: Date},
     recurrenceDays: {type: [Number], enum: Object.values(Weekday)}
 })
 

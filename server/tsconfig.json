@@ -106,6 +106,6 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
 
-  "include": ["src/**/*.ts"],             // Adjust based on where your TypeScript files are
+  "include": ["src/**/*"],             // Adjust based on where your TypeScript files are
   "exclude": ["node_modules"]
 }
